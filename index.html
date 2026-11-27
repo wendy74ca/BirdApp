@@ -20,6 +20,7 @@ select,button{font:inherit;padding:5px 8px;border:1px solid var(--line);backgrou
 .ph{display:flex;align-items:center;justify-content:center;text-align:center;font-size:12px;padding:4px;border:1.5px dashed var(--line);border-radius:10px;background:#fffaf0aa}
 #msg{position:absolute;inset:0;display:flex;flex-direction:column;gap:10px;align-items:center;justify-content:center;text-align:center;padding:24px}
 #msg input{font:inherit;padding:6px 8px;width:min(340px,80vw);border:1px solid var(--line);border-radius:6px}
+#st,#st *{-webkit-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent}.b img,.b canvas{-webkit-user-drag:none;user-drag:none}
 #snd{position:fixed;left:12px;bottom:12px;max-width:min(420px,calc(100vw - 24px));background:#3b2f24;color:#fff;padding:8px 12px;border-radius:8px;font-size:13px;z-index:9;display:none;line-height:1.35}#snd a{color:#bfe0ff}#snd button{margin-left:8px;padding:2px 8px;font-size:12px}#snd input{width:230px;max-width:100%;margin:4px 0}.b.pl{filter:drop-shadow(0 0 7px #4a8fd8)}
 #tip{position:fixed;pointer-events:none;background:#3b2f24;color:#fff;padding:6px 9px;border-radius:6px;font-size:13px;display:none;max-width:260px;z-index:9}
 #ex{font-size:12px;opacity:.7;padding:4px 14px}#ex:empty{display:none}
@@ -201,7 +202,7 @@ function render(){
   cv.onmousemove=ev=>{const p=hit(ev);if(p!==cur){if(cur)cur.e.classList.remove('hv');cur=p;if(p)p.e.classList.add('hv')}
     cv.style.cursor=p?'pointer':'';if(p)tip(ev,p.t);else $('#tip').style.display='none'};
   cv.onmouseleave=()=>{if(cur)cur.e.classList.remove('hv');cur=null;$('#tip').style.display='none'};
-  let ct=null;cv.onclick=ev=>{const p=hit(ev);if(!p)return;clearTimeout(ct);
+  cv.onmousedown=ev=>{if(ev.detail>1)ev.preventDefault()};let ct=null;cv.onclick=ev=>{const p=hit(ev);if(!p)return;clearTimeout(ct);
     if(ev.detail>1){ct=null;stopSound();snd('');window.open('https://ebird.org/species/'+p.t.b.speciesCode,'_blank','noopener');return}
     ct=setTimeout(()=>{ct=null;play(p.t.b,p.e)},260)};
   const last=birds.map(b=>b.obsDt).sort().pop(),nd=T.filter(t=>!t.d);
